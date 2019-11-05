@@ -78,7 +78,7 @@ namespace OAuth2.Client
         /// <param name="state">
         /// Any additional information that will be posted back by service.
         /// </param>
-        public virtual string GetLoginLinkUri(string state = null)
+        public virtual string GetLoginLinkUri(string state = null, string additionalParameters = null)
         {
             var client = _factory.CreateClient(AccessCodeServiceEndpoint);
             var request = _factory.CreateRequest(AccessCodeServiceEndpoint);
@@ -88,7 +88,7 @@ namespace OAuth2.Client
                 {
                     response_type = "code",
                     client_id = Configuration.ClientId,
-                    redirect_uri = Configuration.RedirectUri,
+                    redirect_uri = $@"{Configuration.RedirectUri}{(String.IsNullOrWhiteSpace(additionalParameters) ? "" : $"&{additionalParameters}")}",
                     state
                 });
             }
@@ -98,7 +98,7 @@ namespace OAuth2.Client
                 {
                     response_type = "code",
                     client_id = Configuration.ClientId,
-                    redirect_uri = Configuration.RedirectUri,
+                    redirect_uri = $@"{Configuration.RedirectUri}{(String.IsNullOrWhiteSpace(additionalParameters) ? "" : $"&{additionalParameters}")}",
                     scope = Configuration.Scope,
                     state
                 });
@@ -115,6 +115,15 @@ namespace OAuth2.Client
             GrantType = "authorization_code";
             CheckErrorAndSetState(parameters);
             QueryAccessToken(parameters);
+            return GetUserInfo();
+        }
+
+        /// <summary>
+        /// Obtains user information using OAuth2 service and data provided via callback request.
+        /// </summary>
+        public UserInfo GetUserInfo(string accessToken)
+        {
+            AccessToken = accessToken;
             return GetUserInfo();
         }
 
@@ -219,7 +228,8 @@ namespace OAuth2.Client
 
             TokenType = ParseTokenResponse(response.Content, TokenTypeKey);
 
-            if (Int32.TryParse(ParseTokenResponse(response.Content, ExpiresKey), out int expiresIn))
+            int expiresIn;
+            if (Int32.TryParse(ParseTokenResponse(response.Content, ExpiresKey), out expiresIn))
                 ExpiresAt = DateTime.Now.AddSeconds(expiresIn);
         }
 
@@ -265,9 +275,9 @@ namespace OAuth2.Client
                 args.Request.AddObject(new
                 {
                     code = args.Parameters.GetOrThrowUnexpectedResponse("code"),
-                    client_id = Configuration.ClientId,
-                    client_secret = Configuration.ClientSecret,
                     redirect_uri = Configuration.RedirectUri,
+                    client_id = Configuration.ClientId,
+                    client_secret = Configuration.ClientSecret,                    
                     grant_type = GrantType
                 });
             }

@@ -1,13 +1,107 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\build\common.props" />
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
-    <PackageTags>OAuth2, OAuth, DigitalOcean, Facebook, Foursquare, GitHub, Google, Instagram, LinkedIn, MailRu, Odnoklassniki, Twitter, VK (Vkontakte), Windows Live, Yandex, VSTS</PackageTags>
-    <DefineConstants>FRAMEWORK;NETSTANDARD2_0;</DefineConstants>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D2A9AA08-6163-4B1F-91B1-C9FD96D31ED5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OAuth2</RootNamespace>
+    <AssemblyName>OAuth2</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-    <PackageReference Include="RestSharp" Version="106.0.1" />
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RestSharp, Version=106.1.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>packages\RestSharp.106.1.0\lib\net452\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Client\BeforeAfterRequestArgs.cs" />
+    <Compile Include="Client\Endpoint.cs" />
+    <Compile Include="Client\IClient.cs" />
+    <Compile Include="Client\Impl\DigitalOceanClient.cs" />
+    <Compile Include="Client\Impl\ExactOnlineClient.cs" />
+    <Compile Include="Client\Impl\FacebookClient.cs" />
+    <Compile Include="Client\Impl\FitbitClient.cs" />
+    <Compile Include="Client\Impl\FoursquareClient.cs" />
+    <Compile Include="Client\Impl\GitHubClient.cs" />
+    <Compile Include="Client\Impl\GoogleClient.cs" />
+    <Compile Include="Client\Impl\InstagramClient.cs" />
+    <Compile Include="Client\Impl\LinkedinClient.cs" />
+    <Compile Include="Client\Impl\MailRuClient.cs" />
+    <Compile Include="Client\Impl\OdnoklassnikiClient.cs" />
+    <Compile Include="Client\Impl\SalesforceClient.cs" />
+    <Compile Include="Client\Impl\SpotifyClient.cs" />
+    <Compile Include="Client\Impl\TodoistClient.cs" />
+    <Compile Include="Client\Impl\TwitterClient.cs" />
+    <Compile Include="Client\Impl\VkClient.cs" />
+    <Compile Include="Client\Impl\VSTSClient.cs" />
+    <Compile Include="Client\Impl\WindowsLiveClient.cs" />
+    <Compile Include="Client\Impl\XingClient.cs" />
+    <Compile Include="Client\Impl\YahooClient.cs" />
+    <Compile Include="Client\Impl\YandexClient.cs" />
+    <Compile Include="Client\OAuth2Client.cs" />
+    <Compile Include="Client\OAuthClient.cs" />
+    <Compile Include="Client\UnexpectedResponseException.cs" />
+    <Compile Include="Configuration\ClientConfiguration.cs" />
+    <Compile Include="Configuration\IClientConfiguration.cs" />
+    <Compile Include="Configuration\IOAuth2Configuration.cs" />
+    <Compile Include="Infrastructure\EnumerableExtensions.cs" />
+    <Compile Include="Infrastructure\IRequestFactory.cs" />
+    <Compile Include="Infrastructure\NameValueCollectionExtensions.cs" />
+    <Compile Include="Infrastructure\ObjectExtensions.cs" />
+    <Compile Include="Infrastructure\RequestFactory.cs" />
+    <Compile Include="Infrastructure\RequestFactoryExtensions.cs" />
+    <Compile Include="Infrastructure\RestClientExtensions.cs" />
+    <Compile Include="Infrastructure\SafeExtensions.cs" />
+    <Compile Include="Infrastructure\StringExtensions.cs" />
+    <Compile Include="Models\UserInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

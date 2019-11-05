@@ -62,7 +62,7 @@ namespace OAuth2.Client
         /// </summary>
         /// <param name="state">Any additional information needed by application.</param>
         /// <returns>Login link URI.</returns>
-        public string GetLoginLinkUri(string state = null)
+        public string GetLoginLinkUri(string state = null, string additionalParameters = null)
         {
             if (!state.IsEmpty())
             {

@@ -68,7 +68,7 @@ namespace OAuth2.Client.Impl
             }
         }
 
-        public override string GetLoginLinkUri(string state = null)
+        public override string GetLoginLinkUri(string state = null, string additionalParameters = null)
         {
             return base.GetLoginLinkUri(state ?? Guid.NewGuid().ToString("N"));
         }
